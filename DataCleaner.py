@@ -46,7 +46,7 @@ class DataCleaner:
         id_to_names = all_data[["Wiki_Id", "Name"]]
 
         # do an inner join to get the ids corresponding to names and summaries
-        id_name_summary = pd.merge(id_to_summaries, id_to_names, left_on='Id', right_on='Wiki_Id', how="inner").drop("Wiki_Id", axis=1).tail(2000)
+        id_name_summary = pd.merge(id_to_summaries, id_to_names, left_on='Id', right_on='Wiki_Id', how="inner").drop("Wiki_Id", axis=1).tail(100)
 
         # remove all stop words in all the plots
         id_name_summary["Summary"] = id_name_summary["Summary"].apply(self.clean_summary)
@@ -58,7 +58,7 @@ class DataCleaner:
         print(length_counts.most_common(30))
         
         # create a limit based on number of words
-        limited_id_name_summary = id_name_summary[(id_name_summary.Summary.apply(len) >= 200) & (id_name_summary.Summary.apply(len) <= 300)]
+        limited_id_name_summary = id_name_summary[(id_name_summary.Summary.apply(len) >= 25) & (id_name_summary.Summary.apply(len) <= 35)]
 
         print(limited_id_name_summary)
 

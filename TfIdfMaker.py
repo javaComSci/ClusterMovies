@@ -74,10 +74,10 @@ class TfIdfMaker:
         self.binary_terms = self.terms.copy()
         self.binary_terms[self.binary_terms > 0] = 1
         self.sum_cols = self.binary_terms.sum(axis = 1, skipna = True)
-        self.idf = 219/self.sum_cols
+        self.idf = self.binary_terms.shape[1]/self.sum_cols
         self.idf = np.log(self.idf)
         # print(self.idf)
-        pd.set_option("max_rows", None)
+        # pd.set_option("max_rows", None)
         
         
         print(self.tf.shape)
@@ -86,7 +86,6 @@ class TfIdfMaker:
         # print(self.idf)
         self.tf_idf = self.tf.divide(self.idf, axis=0)
         # print(self.tf_idf)
-
 
         # save as pickle
         self.tf_idf.to_pickle("tf_idf.pkl")
