@@ -8,4 +8,5 @@ if __name__ == "__main__":
     # data_cleaner.clean_data()
 
     tf_idf_maker = TfIdfMaker("limited_id_name_summary.pkl")
-    tf_idf_maker.create_frequencies()
+    # tf_idf_maker.create_frequencies()
+    tf_idf_maker.create_tf_idf()

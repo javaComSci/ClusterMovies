@@ -51,6 +51,8 @@ class DataCleaner:
         # remove all stop words in all the plots
         id_name_summary["Summary"] = id_name_summary["Summary"].apply(self.clean_summary)
 
+        id_name_summary = id_name_summary.loc[:,~id_name_summary.columns.duplicated()]
+        
         # get approximation for number in summary
         length_counts = Counter(self.summary_lengths)
         print(length_counts.most_common(30))

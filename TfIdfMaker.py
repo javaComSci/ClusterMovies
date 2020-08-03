@@ -47,6 +47,7 @@ class TfIdfMaker:
         columns = self.id_name_summary["Name"]
         rows = pd.Index(self.vocabulary_list)
         self.terms_and_movies_frequencies = pd.DataFrame(0, index=rows, columns = columns)
+        self.terms_and_movies_frequencies = self.terms_and_movies_frequencies.loc[:,~self.terms_and_movies_frequencies.columns.duplicated()]
 
         print(self.terms_and_movies_frequencies)
 
@@ -57,5 +58,37 @@ class TfIdfMaker:
 
         # save as a pickle
         self.terms_and_movies_frequencies.to_pickle("terms_and_movies.pkl")
+    
+
+    # calculate the tf_idf values
+    def create_tf_idf(self):
+        # read in the data
+        self.terms_and_movies_frequencies = pd.read_pickle("terms_and_movies.pkl")
+
+        # get the tf matrix
+        self.terms = self.terms_and_movies_frequencies.copy()
+        self.sums_rows = self.terms.sum(axis = 0, skipna = True)
+        self.tf = self.terms/self.sums_rows
+
+        # get the idf matrix
+        self.binary_terms = self.terms.copy()
+        self.binary_terms[self.binary_terms > 0] = 1
+        self.sum_cols = self.binary_terms.sum(axis = 1, skipna = True)
+        self.idf = 219/self.sum_cols
+        self.idf = np.log(self.idf)
+        # print(self.idf)
+        pd.set_option("max_rows", None)
+        
+        
+        print(self.tf.shape)
+        print(self.idf.shape)
+        # print(self.tf)
+        # print(self.idf)
+        self.tf_idf = self.tf.divide(self.idf, axis=0)
+        # print(self.tf_idf)
+
+
+        # save as pickle
+        self.tf_idf.to_pickle("tf_idf.pkl")
 
         
